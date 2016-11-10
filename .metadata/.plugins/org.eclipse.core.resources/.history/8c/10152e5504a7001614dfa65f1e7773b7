@@ -1,0 +1,21 @@
+/***************************
+ * 学籍番号:40313
+ * 作成者　:k.koki
+ * 作成日　:2016/11/10
+ * 内容　　:ログインに関する制御を行う。
+ * *************************/
+package beans;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
+public class Login implements LoginInterface{
+	private HttpServlet servlet;
+	private HttpServletRequest request;
+	public Login(HttpServlet servlet,HttpServletRequest request) {
+		// TODO 自動生成されたコンストラクター・スタブ
+		this.servlet=servlet;
+		this.request=request;
+	}
+	
+}
