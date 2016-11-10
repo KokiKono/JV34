@@ -1,0 +1,30 @@
+/***************************
+ * 学籍番号:40313
+ * 作成者　:k.koki
+ * 作成日　:2016/11/10
+ * 内容　　:
+ * *************************/
+package beans;
+
+public interface LoginInterface {
+	public enum Dao{
+		SQL("SelectLogin.sql");
+
+		public String sqlPath;
+		Dao(String sqlPath){
+			this.sqlPath=sqlPath;
+		}
+	}
+	public enum Forward{
+
+
+		public String flg;
+		public String from;
+		public String to;
+		Forward(String flg,String from,String to){
+			this.flg=flg;
+			this.from=from;
+			this.to=to;
+		}
+	}
+}

@@ -1,0 +1,73 @@
+/***************************
+ * 学籍番号:40313
+ * 作成者　:k.koki
+ * 作成日　:2016/11/10
+ * 内容　　:ログインに関する定数定義などを記述する。
+ * *************************/
+package beans;
+
+public interface LoginInterface {
+	/**
+	 * ログインチャレンジを行うSQLファイル、DB名を定義する。
+	 * @author 浩生
+	 *
+	 */
+	public enum Dao{
+		SQL("SelectLogin.sql"),
+		/*これより上に定義する。*/
+		DB("jv34");
+		public String val;
+		Dao(String val){
+			this.val=val;
+		}
+	}
+	/**
+	 * ログイン状態によって初期フォワード先を定義する。
+	 * @author 浩生
+	 *
+	 */
+	public enum Forward{
+		/*これより上に定数を定義してください。*/
+		Welcome("0","welcome.jsp");
+		public String flg;
+		public String to;
+		Forward(String flg,String to){
+			this.flg=flg;
+			this.to=to;
+		}
+		/**
+		 * 指定フラグを持つ遷移先ページ名を取得します。
+		 * 見つからない場合はnullを返します。
+		 * @auther 浩生
+		 * 2016/11/10
+		 * @param flg
+		 * @return
+		 */
+		public static Forward indexOf(String flg){
+			for(Forward forward:Forward.values()){
+				if(forward.flg.equals(flg)){
+					return forward;
+				}
+			}
+			return null;
+		}
+	}
+
+	/**
+	 * ログインチャレンジのレスポンス定義
+	 * ログイン成功
+	 * @auther 浩生
+	 * 2016/11/10
+	 * @param OK String
+	 */
+	public static final String OK="ok";
+	/**
+	 * ログインチャレンジのレスポンス定義
+	 * チャレンジ失敗
+	 * @auther 浩生
+	 * 2016/11/10
+	 * @param NG String
+	 */
+	public static final String NG="ng";
+
+}

@@ -1,0 +1,13 @@
+package beans;
+
+public interface LoginInterface {
+	public enum Dao{
+		SQL("SelectLogin.sql");
+
+		public String path;
+		private Dao(String sqlPath) {
+			// TODO 自動生成されたコンストラクター・スタブ
+			this.path=path;
+		}
+	}
+}

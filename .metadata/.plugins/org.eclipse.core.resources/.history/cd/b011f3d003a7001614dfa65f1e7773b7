@@ -1,0 +1,39 @@
+/***************************
+ * 学籍番号:40313
+ * 作成者　:k.koki
+ * 作成日　:2016/11/10
+ * 内容　　:ログインに関する定数定義などを記述する。
+ * *************************/
+package beans;
+
+public interface LoginInterface {
+	/**
+	 * ログインチャレンジを行うSQLファイルを定義する。
+	 * @author 浩生
+	 *
+	 */
+	public enum Dao{
+		SQL("SelectLogin.sql");
+
+		public String sqlPath;
+		Dao(String sqlPath){
+			this.sqlPath=sqlPath;
+		}
+	}
+	/**
+	 * ログイン状態によって初期フォワード先を定義する。
+	 * @author 浩生
+	 *
+	 */
+	public enum Forward{
+
+		Welcome("0","welcome.jsp");
+		public String flg;
+		public String to;
+		Forward(String flg,String to){
+			this.flg=flg;
+			this.to=to;
+		}
+	}
+
+}
