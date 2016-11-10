@@ -118,7 +118,6 @@ public interface LoginInterface {
 			}
 			return result;
 		}
-
 	}
 
 }
