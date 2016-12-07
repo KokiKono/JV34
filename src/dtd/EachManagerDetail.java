@@ -40,7 +40,7 @@ public class EachManagerDetail {
 		}
 	}
 
-	private enum Attend{
+	public enum Attend{
 		Absence(0,"欠勤"),
 		Attendance(1,"出勤"),
 		Hokiday(2,"休日"),
@@ -52,7 +52,7 @@ public class EachManagerDetail {
 			this.code=code;
 			this.value=value;
 		}
-		protected static ArrayList<String> getSelectOption(int checkCodde){
+		public static ArrayList<String> getSelectOption(int checkCodde){
 			ArrayList<String> result=new ArrayList<>();
 			for(Attend attend:Attend.values()){
 				StringBuffer sb=new StringBuffer();
@@ -66,6 +66,7 @@ public class EachManagerDetail {
 			}
 			return result;
 		}
+
 		public static Attend findAttend(int code){
 			for(Attend attend:Attend.values()){
 				if(attend.code==code)return attend;

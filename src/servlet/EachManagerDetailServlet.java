@@ -2,7 +2,7 @@
  * 学籍番号:40313
  * 作成者　:K.koki
  * 作成日　:2016/12/05
- * 内容　　:各社員の勤怠情報を新規登録、変更するサーブレット。
+ * 内容　　:各社員の勤怠情報を変更するサーブレット。
  * *************************/
 package servlet;
 
@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.CalendarByKoki;
 import beans.DBManager;
 import beans.DBManager.PreparedStatementByKoki;
 import beans.InspectionValue;
@@ -49,6 +50,9 @@ public class EachManagerDetailServlet extends HttpServlet implements DataBase {
 		String depNo = (String) request.getParameter("depNo");
 		String empNo = (String) request.getParameter("empNo");
 
+
+		//当月の登録済み勤怠情報のみ取得
+		CalendarByKoki nowDate=new CalendarByKoki();
 		DBManager dbManager = null;
 		try {
 			dbManager = new DBManager(DBName);
@@ -57,6 +61,7 @@ public class EachManagerDetailServlet extends HttpServlet implements DataBase {
 
 			selectAttend.setString("EMP_ID", empNo);
 			selectAttend.setInt("DEPT_ID", Integer.parseInt(depNo));
+			selectAttend.setString("DATE", nowDate.getYear()+"-"+nowDate.getMonth()+"%");
 			//画面に渡す情報を整形する処理。
 			EachManagerDetail detail=new EachManagerDetail();
 			detail.empNo=empNo;
