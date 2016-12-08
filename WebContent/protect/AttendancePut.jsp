@@ -45,13 +45,23 @@
 	<div class="contents">
 		<!--Resultは入力ミスまたデータベースに登録できたかどうかのメッセージを表示する-->
 		<%=result %>
-		<form action="./AttendancePutServlet" method="post">
-		<p><input type="text" name="year" value="<%=year %>">年<input type="text" name="month" value="<%=month %>">月</p>
-		※半角数字
-		<p>最低勤務日数<input type="text" name="days" value="<%=days %>"></p>
-		※半角数字
-		<p><input type="submit" name="put" value="登録"></p>
-		</form>
+
+		<div class="">
+			<form action="./AttendancePutServlet" method="post">
+			<p><input type="text" name="year" value="<%=year %>">年<input type="text" name="month" value="<%=month %>">月</p>
+			※半角数字
+			<p>最低勤務日数<input type="text" name="days" value="<%=days %>"></p>
+			※半角数字
+			<p><input type="submit" name="put" value="登録"></p>
+			</form>
+		</div>
+
+		<div class="datasection">
+
+
+
+		</div>
+
 	</div>
 </div>
 </body>
