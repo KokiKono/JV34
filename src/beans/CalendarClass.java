@@ -7,12 +7,12 @@ package beans;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarClass
 {
-	// 生年月日を入力できる範囲の基準値
 
 	// 最高定年
 	private static final int MaxAge = 65;
@@ -75,9 +75,9 @@ public class CalendarClass
 	 * 入力された年月の日数が正しいかどうか
 	 * 
 	 * @auther dyf 2016/11/20
-	 * @return 正しいなら1,正しくないなら0
+	 * @return 正しいならtrue,正しくないならfalse
 	 */
-	public int daysCheck()
+	public boolean daysCheck()
 	{
 		// 入力された年月をCalendarにセットする
 		Calendar _calendar = Calendar.getInstance();
@@ -91,10 +91,10 @@ public class CalendarClass
 
 		if (_monthOfDay < monthOfDay || _monthOfDay == monthOfDay)
 		{
-			return 1;
+			return true;
 		} else
 		{
-			return 0;
+			return false;
 		}
 
 	}
@@ -129,6 +129,10 @@ public class CalendarClass
 
 		return calendar.getActualMaximum(Calendar.DATE);
 	}
+	
+	/********************************************************************
+	 *　生年月日入力可能値
+	 *******************************************************************/
 
 	/**
 	 * 生年月日入力できる最小値を取得
@@ -138,7 +142,7 @@ public class CalendarClass
 	 */
 	public int retirementAge()
 	{
-		return 	Integer.parseInt(this.year) - this.MaxAge;
+		return Integer.parseInt(this.year) - this.MaxAge;
 	}
 
 	/**
@@ -150,6 +154,66 @@ public class CalendarClass
 	public int joinedAge()
 	{
 		return Integer.parseInt(this.year) - this.MinAge;
+	}
+
+	/**
+	 * 入力可能年の範囲
+	 * @auther dyf
+	 * 2016/12/08
+	 * @param year 入力可能の最大または最小値を渡す
+	 * @return　入力可能年
+	 */
+	public String range(String year)
+	{
+		return year + this.MONTH + this.DATE;
+	}
+	/**
+	 * 入力可能生年月日
+	 * @auther dyf
+	 * 2016/12/07
+	 * @return 入力可能年List
+	 */
+	public ArrayList<String> birthdayList()
+	{
+		ArrayList<String> birthday = new ArrayList<String>();
+		for (int i = joinedAge(); i >= retirementAge(); i--)
+		{
+			birthday.add(String.valueOf(i));
+		}
+		return birthday;
+	}
+	
+	// 19960301より小さいなら登録可能
+	// 19510301より大きくなら登録可能
+
+	
+	public boolean birthdayCheck(int birhtdayValue)
+	{
+		if (retirementAge() < birhtdayValue || joinedAge() > birhtdayValue)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+
+	
+	
+/**************************************
+ * 	日付のフォーマット
+ **************************************/
+
+	/**
+	 * 入力された月を2桁に変換
+	 * @auther dyf
+	 * 2016/12/05
+	 * @param month 入力され月
+	 * @return　2桁に変換された月
+	 */
+	public String monthFormat(String month)
+	{
+		return String.format("%02d", Integer.valueOf(month));
 	}
 
 	/**
@@ -174,23 +238,9 @@ public class CalendarClass
 		String parseResult = parserTo.format(date);
 
 		return parseResult;
-
 	}
 
-	// 19960301より小さいなら登録可能
-	// 19510301より大きくなら登録可能
 	
-	public boolean birthdayCheck(int birhtdayValue)
-	{
-		if (retirementAge() < birhtdayValue || joinedAge() > birhtdayValue)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 
 	/**************************************************************************
 	 * Getters Setters

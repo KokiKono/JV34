@@ -5,6 +5,8 @@
  * *************************/
 package beans;
 
+import java.util.ArrayList;
+
 public class ErrorCheck
 {
 
@@ -120,6 +122,27 @@ public class ErrorCheck
 	public boolean isNullOrEmpty(String value)
 	{
 		return value == null || value.isEmpty();
+	}
+	
+	/**
+	 * ArrayListがnullの場合空を返す
+	 * @auther dyf
+	 * 2016/12/05
+	 * @param list
+	 * @return　nullなら空を返す
+	 */
+	public ArrayList<ArrayList<String>> listIsNullReturnEmpty(ArrayList<ArrayList<String>> list) 
+	{
+		ArrayList<ArrayList<String>> emptyArray = new ArrayList<ArrayList<String>>();
+		if (list == null)
+		{
+			return emptyArray;
+		}
+		else
+		{
+			return list;
+		}
+				
 	}
 	
 	/**

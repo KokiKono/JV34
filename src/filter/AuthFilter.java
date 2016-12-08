@@ -21,93 +21,106 @@ import dtd.PermissionType;
 /**
  * Servlet Filter implementation class AuthFilter
  */
-@WebFilter(filterName="AuthFilter", urlPatterns={"/protect/*"})
-public class AuthFilter implements Filter {
+@WebFilter(filterName = "AuthFilter", urlPatterns = { "/protect/*" })
+public class AuthFilter implements Filter
+{
 
-    /**
-     * Default constructor.
-     */
-    public AuthFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public AuthFilter()
+	{
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
 	 */
-	public void destroy() {
+	public void destroy()
+	{
 		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse res = (HttpServletResponse)response;
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException
+	{
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 
-		//アクセスしようとするページのURL
+		// アクセスしようとするページのURL
 		String accessURL = req.getServletPath();
 		System.out.println(accessURL);
-		HttpSession session = ((HttpServletRequest)request).getSession();
+		HttpSession session = ((HttpServletRequest) request).getSession();
 
 		/**
-		 * ここに社員IDを渡す
-		 * sessionで保管した社員ID
+		 * ここに社員IDを渡す sessionで保管した社員ID
 		 */
+<<<<<<< HEAD
 		//String employeeID = (String) session.getAttribute("employeeID");
 		String employeeID = "0000003";
+=======
+		// String employeeID = (String) session.getAttribute("employeeID");
+		String employeeID = "0000002";
+>>>>>>> origin/dyf
 
 		ErrorCheck check = new ErrorCheck();
 		// 未認証ならサインイン画面へ
 		if (session == null || check.isNullOrEmpty(employeeID))
 		{
-			//トップページに飛ばす、トップページのパス指定
+			// トップページに飛ばす、トップページのパス指定
 			res.sendRedirect(req.getContextPath() + "/top.jsp");
 
 		}
 
-		try
+		if (!employeeID.equals("0000001"))
 		{
-			DBManager db = new DBManager("JV34_team");
 
-			if (accessURL.equals("/protect/AttendancePut.jsp"))
+			try
 			{
-				boolean havePermission = db.permission(PermissionType.Department, "経理部", employeeID);
-				if (havePermission == false)
+				DBManager db = new DBManager("JV34_team");
+
+				if (accessURL.equals("/protect/AttendancePut.jsp"))
 				{
-					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
-					return;
-				}
-			}
-			else if (accessURL.equals("/protect/AttendanceEmployeeServlet"))
-			{
-				boolean havePermission = db.permission(PermissionType.Manager, "部長", employeeID);
-				if (havePermission == false)
+					boolean havePermission = db.permissionCheck(PermissionType.Department, "経理部", employeeID);
+					if (havePermission == false)
+					{
+						res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
+						return;
+					}
+				} else if (accessURL.equals("/protect/AttendanceEmployeeServlet"))
 				{
-					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
-					return;
+					boolean havePermission = db.permissionCheck(PermissionType.Manager, "部長", employeeID);
+					if (havePermission == false)
+					{
+						res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
+						return;
+					}
+
+				} else if (accessURL.equals("/protect/ShowEmployee.jsp")
+						|| accessURL.equals("/protect/dept_registration.jsp")
+						|| accessURL.equals("/protect/included_salary.jsp"))
+				{
+					boolean havePermission = db.permissionCheck(PermissionType.Department, "人事部", employeeID);
+					if (havePermission == false)
+					{
+						res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
+						return;
+					}
 				}
 
-			}
-			else if (accessURL.equals("/protect/ShowEmployee.jsp") || accessURL.equals("/protect/dept_registration.jsp") || accessURL.equals("/protect/included_salary.jsp"))
+				db.closeDB();
+			} catch (ClassNotFoundException e)
 			{
-				boolean havePermission = db.permission(PermissionType.Department, "人事部", employeeID);
-				if (havePermission == false)
-				{
-					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
-					return;
-				}
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			db.closeDB();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		// pass the request along the filter chain
@@ -117,10 +130,9 @@ public class AuthFilter implements Filter {
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
-	public void init(FilterConfig fConfig) throws ServletException {
+	public void init(FilterConfig fConfig) throws ServletException
+	{
 		// TODO Auto-generated method stub
 	}
-
-
 
 }
