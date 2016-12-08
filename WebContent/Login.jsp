@@ -21,7 +21,7 @@
 	<div class="error toperror">
 		エラーメッセージ
 	</div>
-	<form action="/LoginServlet">
+	<form action="<%=request.getContextPath() %>/LoginServlet">
 		<div class="form-group">
 		     <input type="text" class="form-control" placeholder="社員番号">
 		</div>
