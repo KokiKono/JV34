@@ -1,0 +1,3 @@
+--社員リスト（社員番号・社員名）を出力する。各社員ページ専用。
+
+SELECT employee_master, employee_name FROM employee_master

@@ -15,7 +15,11 @@ RemoteSystemsTempFiles/*
 .project
 .classpath
 .settings
+<<<<<<< HEAD
 .tomcatplugin
+=======
+
+>>>>>>> origin/kanz
 # Idea
 .idea
 *.iml

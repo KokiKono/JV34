@@ -1,0 +1,1 @@
+SELECT employee_master, employee_name FROM employee_master;
