@@ -7,6 +7,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,7 +27,7 @@ import beans.ErrorCheck;
 public class AttendancePutServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-
+	DBManager db;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -42,7 +43,38 @@ public class AttendancePutServlet extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		doPost(request, response);
+		// 文字化け対策
+		response.setContentType("application/json; charset = UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		
+		try
+		{
+			//登録された最低勤怠日数情報を取得
+			ArrayList<ArrayList<String>> lowestWorkingDays = new ArrayList<ArrayList<String>>();
+
+			db = new DBManager("JV34_team");
+			String sql = "SELECT period, lowest_working_days FROM lowest_working_days_master";
+			lowestWorkingDays = db.runSelect(sql);
+			
+			//遷移
+			String strJspName = "AttendancePut.jsp";
+			
+			request.setAttribute("lowestWorkingDays", lowestWorkingDays);
+			
+			RequestDispatcher rd = request.getRequestDispatcher(strJspName);
+			rd.forward(request, response);
+			
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 	}
 
 	/**
@@ -82,7 +114,7 @@ public class AttendancePutServlet extends HttpServlet
 
 			_month = errorCheck.getMonth(month);
 
-			//カレンダークラスに入力された日付をセットする
+			// カレンダークラスに入力された日付をセットする
 			CalendarClass cleandar = new CalendarClass();
 			cleandar._setYear(year);
 			cleandar._setMonth(_month);
@@ -91,7 +123,7 @@ public class AttendancePutServlet extends HttpServlet
 			if (cleandar.pastPresentFuture() == 1)
 			{
 				mes += "正しい年月を入力してください<br>";
-			} else if (cleandar.daysCheck() == 0)
+			} else if (cleandar.daysCheck() == false)
 			{
 				mes += "正しい最低勤怠日数を入力してください<br>";
 			}
@@ -119,7 +151,7 @@ public class AttendancePutServlet extends HttpServlet
 			try
 			{
 				// JV34_teamというデータベースにアクセス
-				DBManager db = new DBManager("JV34_team");
+				db = new DBManager("JV34_team");
 
 				boolean isExist = db.selectIsExist("select * from lowest_working_days_master where period = ?",
 						Integer.parseInt(year + _month));
@@ -167,6 +199,5 @@ public class AttendancePutServlet extends HttpServlet
 		rd.forward(request, response);
 
 	}
-
 
 }

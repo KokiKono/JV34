@@ -72,7 +72,7 @@ public class AuthFilter implements Filter {
 
 			if (accessURL.equals("/protect/AttendancePut.jsp"))
 			{
-				boolean havePermission = db.permission(PermissionType.Department, "経理部", employeeID);
+				boolean havePermission = db.permissionCheck(PermissionType.Department, "経理部", employeeID);
 				if (havePermission == false)
 				{
 					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
@@ -81,7 +81,7 @@ public class AuthFilter implements Filter {
 			}
 			else if (accessURL.equals("/protect/AttendanceEmployeeServlet"))
 			{
-				boolean havePermission = db.permission(PermissionType.Manager, "部長", employeeID);
+				boolean havePermission = db.permissionCheck(PermissionType.Manager, "部長", employeeID);
 				if (havePermission == false)
 				{
 					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
@@ -91,7 +91,7 @@ public class AuthFilter implements Filter {
 			}
 			else if (accessURL.equals("/protect/ShowEmployee.jsp") || accessURL.equals("/protect/dept_registration.jsp") || accessURL.equals("/protect/included_salary.jsp"))
 			{
-				boolean havePermission = db.permission(PermissionType.Department, "人事部", employeeID);
+				boolean havePermission = db.permissionCheck(PermissionType.Department, "人事部", employeeID);
 				if (havePermission == false)
 				{
 					res.sendRedirect(req.getContextPath() + "/error/noAuth.jsp");
