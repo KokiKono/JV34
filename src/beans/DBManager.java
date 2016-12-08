@@ -403,7 +403,7 @@ public class DBManager
 		private String sql;
 		/**
 		 * toNull()、toNullAll()を実行したときのkeyログ
-		 *
+		 * 
 		 * @auther 浩生 2016/11/08
 		 * @param toNullKeys
 		 *            ArrayList<String>
@@ -594,7 +594,7 @@ public class DBManager
 
 		/**
 		 * SQLをクリーンする（未実装）
-		 *
+		 * 
 		 * @auther 浩生 2016/11/07
 		 *
 		 */
@@ -656,7 +656,7 @@ public class DBManager
 
 		/**
 		 * コメント文を全て削除します。
-		 *
+		 * 
 		 * @auther 浩生 2016/11/08
 		 * @return
 		 */
@@ -687,7 +687,7 @@ public class DBManager
 
 		/**
 		 * 引数配列keyがtoNull()、toNullAll()で使用されたかを検索しbooleanを返します。
-		 *
+		 * 
 		 * @auther 浩生 2016/11/08
 		 * @param keys
 		 * @return
@@ -719,7 +719,7 @@ public class DBManager
 
 	/**
 	 * updateまたはinsertするメソッド
-	 *
+	 * 
 	 * @auther dyf 2016/11/20
 	 * @param params
 	 *            第一引数は必ずSQL文,objectを渡す
@@ -760,7 +760,7 @@ public class DBManager
 
 	/**
 	 * すでにデータベースに登録されているかどうか
-	 *
+	 * 
 	 * @auther dyf 2016/11/20
 	 * @param params
 	 *            objectを渡す,最初のパラメータ必ずsql文
@@ -794,7 +794,7 @@ public class DBManager
 
 	/**
 	 * データベースにアクセス情報取得
-	 *
+	 * 
 	 * @auther dyf
 	 * @param params
 	 *            第一引数は必ずSQL文
@@ -849,7 +849,7 @@ public class DBManager
 
 	/**
 	 * 特定情報を取得する場合は
-	 *
+	 * 
 	 * @auther dyf 2016/11/29
 	 * @param params
 	 *            第一引数はSQL,第二引数はデータベースに取得したいカラム名
@@ -900,52 +900,23 @@ public class DBManager
 	}
 
 	/**
-	 * ページにアクセスする権限があるかどうチェックする
-	 *
-	 * @auther dyf 2016/12/01
-	 * @param officialPositionID
-	 *            役職マスタにアクセス必要な役職IDを取得
-	 * @param loginEmployeeID
-	 *            チェックする人の社員番号
-	 * @return 権限があるとtrue,権限がないとfalse
-	 */
-	public boolean permissionCheck(String officialPositionName, String loginEmployeeID)
-	{
-		// 役職マスタに役職IDを取得
-		String officialPositionGet = "SELECT official_position_id,official_position_name FROM official_position_master WHERE official_position_name = ?";
-		String officialPosition = selectReturnStr(officialPositionGet, "official_position_id", officialPositionName);
-
-		// ログインした人の社員番号で役職IDを取得
-		String employeeOfficalGet = "SELECT official_position_id FROM employee_master WHERE employee_master = ?";
-		String employeeOffical = selectReturnStr(employeeOfficalGet, "official_position_id", loginEmployeeID);
-
-		// ログインした人権限があるかどうか
-		if (employeeOffical.equals(officialPosition))
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
-	}
-
-
-	/**
 	 * 権限チェック 列挙型からチェックしたい権限取得
-	 * @auther dyf
-	 * 2016/12/04
-	 * @param checkPer 権限種類
-	 * @param permissionName　必須権限名
-	 * @param loginEmployeeID　ログインしている社員ID
+	 * 
+	 * @auther dyf 2016/12/04
+	 * @param checkPer
+	 *            チェックしたい権限種類
+	 * @param permissionName
+	 *            チェックする権限名
+	 * @param loginEmployeeID
+	 *            ログインしている社員ID
 	 * @return 権限があるとtrue,ないとfalse
 	 */
-	public boolean permission(PermissionType checkPer, String permissionName, String loginEmployeeID)
+	public boolean permissionCheck(PermissionType checkPer, String permissionName, String loginEmployeeID)
 	{
 
 		String dbPermission = "";
 		String permission = "";
 		String employeePermission = "";
-
 
 		switch (checkPer) {
 
@@ -961,7 +932,7 @@ public class DBManager
 
 			dbPermission = "SELECT department_id,department_name FROM department_master WHERE department_name = ?";
 			permission = "department_id";
-			employeePermission = "SELECT department_id FROM employee_master WHERE employee_master.employee_master = ?";
+			employeePermission = "SELECT department_id FROM employee_master WHERE employee_master = ?";
 
 			break;
 		}
@@ -979,5 +950,6 @@ public class DBManager
 			return false;
 		}
 	}
+
 
 }
