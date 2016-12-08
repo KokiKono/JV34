@@ -43,6 +43,10 @@ public class LoginServlet extends HttpServlet implements DataBase{
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		// 文字化け対策
+		response.setContentType("application/json; charset = UTF-8");
+		request.setCharacterEncoding("UTF-8");
+
 		String id=(String)request.getParameter("id");
 		String pass=(String)request.getParameter("pass");
 

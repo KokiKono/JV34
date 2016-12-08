@@ -34,6 +34,10 @@
 	float: left;
 }
 
+.header p {
+	float: right;
+}
+
 .nav {
 	width: 200px;
 	height: 720px;
@@ -68,5 +72,9 @@
 .toperror {
 	margin-bottom: 10px;
 	height: 20px;
+}
+
+#welcome {
+	background-color: #faa;
 }
 

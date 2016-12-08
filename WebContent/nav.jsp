@@ -1,11 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ page import="beans.UserInfoGetter" %>
+<%
+ //ユーザーIDを取得
+ String userId = (String)request.getSession().getAttribute("employeeId");
+
+ //部署IDを取得。
+ UserInfoGetter uig = new UserInfoGetter(userId);
+ String depNo = uig.getDeptId();
+%>
 
 <div class="nav">
 
 		<div class="navsection">
 	        <h5 class="text-info">各社員メニュー</h5>
 	        <div class="list-group">
+	          <a href="http://localhost:8080/JV34_team/index.jsp" class="list-group-item">トップページ</a>
 	          <a href="http://localhost:8080/JV34_team/protect/each_employee.jsp" class="list-group-item">給与明細</a>
 	        </div>
 	    </div>
@@ -30,7 +40,7 @@ pageEncoding="UTF-8"%>
 
         <h5 class="text-info">各部長メニュー</h5>
         <div class="list-group">
-          <a href="#" class="list-group-item">勤怠登録</a>
+          <a href="http://localhost:8080/JV34_team/protect/EachManagerServlet?depNo=<%=depNo %> class="list-group-item">勤怠登録</a>
         </div>
 
-    </div>
+</div>

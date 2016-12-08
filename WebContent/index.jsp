@@ -13,25 +13,23 @@
 	<script src="js/bootstrap.min.js"></script>
 	<!-- 調整用css読み込み -->
 	<link href="css/common.css" rel="stylesheet">
-<title>TOP</title>
+	<title>トップページ</title>
 </head>
 <body>
-<div class="topwrapper">
-	<h1>システムTOP</h1>
-	<div class="error toperror">
-		エラーメッセージ
+<div class="wrapper">
+	<!-- 共通ヘッダー -->
+	<%@ include file="../header.jsp" %>
+	<!-- 共通ナビゲーション -->
+	<%@ include file="../nav.jsp" %>
+
+	<div class="contents">
+		<div style="font-size: 130px;">
+			<p style="color: #faa; ">Welcome!!!!!!!!!!!!!!</p>
+			<p style="color: #afa; ">Welcome!!!!!!!!!!!!!!</p>
+			<p style="color: #aaf; ">Welcome!!!!!!!!!!!!!!</p>
+		</div>
+
 	</div>
-	<form action="<%=request.getContextPath() %>/LoginServlet" method="post">
-		<div class="form-group">
-		     <input type="text" class="form-control" placeholder="社員番号" name="id">
-		</div>
-		<div class="form-group">
-		     <input type="password" class="form-control" placeholder="パスワード" name="pass">
-		</div>
-		<div style="">
-			<input type="submit" value="login" class="btn btn-primary btn-block">
-		</div>
-	</form>
 </div>
 </body>
 </html>

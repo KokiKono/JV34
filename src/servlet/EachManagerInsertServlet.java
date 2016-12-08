@@ -22,7 +22,7 @@ import common.DataBase;
 /**
  * Servlet implementation class EachManagerInsertServlet
  */
-@WebServlet("/EachManagerInsertServlet")
+@WebServlet("/protect/EachManagerInsertServlet")
 public class EachManagerInsertServlet extends HttpServlet implements DataBase{
 	private static final long serialVersionUID = 1L;
 
