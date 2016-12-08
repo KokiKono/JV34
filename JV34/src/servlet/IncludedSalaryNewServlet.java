@@ -2,7 +2,7 @@
  * 学籍番号:40292
  * 作成者　:T.Kanz
  * 作成日　:2016/12/04
- * 内容　　:付加給与変更に関するサーブレット。
+ * 内容　　:付加給与新規登録に関するサーブレット。
  * *************************/
 package servlet;
 
@@ -19,16 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import beans.IncludedSalary;
 
 /**
- * Servlet implementation class IncludedSalaryServlet
+ * Servlet implementation class IncludedSalaryNewServlet
  */
-@WebServlet("/IncludedSalaryServlet")
-public class IncludedSalaryServlet extends HttpServlet {
+@WebServlet("/IncludedSalaryNewServlet")
+public class IncludedSalaryNewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public IncludedSalaryServlet() {
+    public IncludedSalaryNewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,19 +43,16 @@ public class IncludedSalaryServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		//入力した部署名だけ受け取り
-		String err = "";//エラーメッセージ
-		String id = request.getParameter("id"); //付加給与ID
+		String err = "";//エラーメッセージ格納
 		String from = request.getParameter("from"); //勤務年数from
 		String to = request.getParameter("to"); //勤務年数to
 		String salary = request.getParameter("salary"); //付加給与額
-
 
 		//空白＆nullチェック。
 		boolean check = IncludedSalary.checkVal(from, to, salary);
 		if (check){
 			err = "いずれかの欄が入力されていません。";
 			request.setAttribute("err", err);
-			request.setAttribute("salaryid", id);
 			RequestDispatcher rd = request.getRequestDispatcher("included_salary_regist.jsp");
 			rd.forward(request,response);
 			return;
@@ -67,7 +64,6 @@ public class IncludedSalaryServlet extends HttpServlet {
 				Integer.parseInt(salary);
 				err="終了年以上の開始年が入力されています。";
 				request.setAttribute("err", err);
-				request.setAttribute("salaryid", id);
 				RequestDispatcher rd = request.getRequestDispatcher("included_salary_regist.jsp");
 				rd.forward(request,response);
 				return;
@@ -75,24 +71,23 @@ public class IncludedSalaryServlet extends HttpServlet {
 		}catch(Exception e){
 			err = "半角数字以外が含まれています。";
 			request.setAttribute("err", err);
-			request.setAttribute("salaryid", id);
 			RequestDispatcher rd = request.getRequestDispatcher("included_salary_regist.jsp");
 			rd.forward(request,response);
 			return;
 		}
 
-		System.out.println(from + to + salary +"IDは"+ id);
-		//エラーに引っかからなければ既存付加給与をUPDATE
-		try{
-			IncludedSalary.UpdateAdvantageSalary(from, to, salary, id);
+		//新規付加給与をINSERT
+		try {
+			IncludedSalary.InsertAdvantageSalary(from, to, salary);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 
-		//リスト画面にフォワード
+		//付加給与リストへフォワード
 		RequestDispatcher rd = request.getRequestDispatcher("included_salary.jsp");
 		rd.forward(request,response);
-	}
+		}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

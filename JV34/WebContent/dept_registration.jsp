@@ -23,7 +23,10 @@ DBManager db = new DBManager("jv34team");
 ArrayList<ArrayList<String>> result = db.runSelect("SELECT * FROM department_master");
 
 //課SQL 出力
-ArrayList<ArrayList<String>> result2 = db.runSelect("SELECT sub_department_id, sub_department_name, department_name FROM sub_department_master sbd JOIN department_master dm ON sbd.department_id = dm.department_id");
+ArrayList<ArrayList<String>> result2 = db.runSelect("SELECT sub_department_id, sub_department_name FROM sub_department_master");
+
+//部課SQL 出力
+ArrayList<ArrayList<String>> result3 = db.runSelect("SELECT dm.department_name, sdm.sub_department_name FROM department_master dm JOIN sub_department_master sdm ON dm.department_id = sdm.department_id");
 
 //DBクローズ
 db.closeDB();
@@ -48,27 +51,54 @@ db.closeDB();
 <ul>
 	<li>既に存在する部署及び課は登録できません。</li>
 	<li>文字が入力されていない場合登録できません。</li>
-	<li>記号を含めた場合は登録できません。</li>
 	<li>同時に登録することはできません。</li>
 </ul>
 
 <!-- エラー文を取得並びに出力 -->
-<% String err = (String)request.getAttribute("err");
-if ( err != null ){
-	out.println("<font color='red'>"+err+"</font>");
-}
-%>
 
 <!-- 部・課の登録フォーム -->
 <form method="get" action="DeptRegistrationServlet" name="test" onSubmit="return check()">
 	<input type = "text" name = "deptname">部
 	<input type = 'submit' name ="" value = "部署登録">
-</form><br/><br/>
-<form method="get" action="DeptRegistrationServlet" name="test" onSubmit="return check()">
-	<input type = "text" name = "deptname">課
-	<input type = 'submit' name ="" value = "課登録">
+<% String err = (String)request.getAttribute("err");
+if ( err != null ){
+	out.println("<font color='red'>"+err+"</font>");
+}
+%>
 </form>
-
+<form method="get" action="SubDeptRegistrationServlet" name="test" onSubmit="return check()">
+<select name="deptid">
+<%
+int deptid = 0;
+for (ArrayList<String> rec:result){ %>
+	<option value ="<%out.println(result.get(deptid).get(0)); %>"><%out.println(result.get(deptid).get(1));%></option>
+<% deptid++; } %>
+</select>部
+	<input type = "text" name = "subdeptname">課
+	<input type = 'submit' name ="" value = "課登録">
+<% String err2 = (String)request.getAttribute("err2");
+if ( err2 != null ){
+	out.println("<font color='red'>"+err2+"</font>");
+}
+%>
+</form>
+<!-- 各部課をテーブル表示 -->
+<h1>部課リスト</h1>
+<table border = 1>
+	<thead><tr><th>部門</th><th>課</th></tr></thead>
+	<%
+	int i3 = 0;//配列内のカラムを回すために必要な数字。1レコード毎に増えていく。
+	for(ArrayList<String> rec :result3){
+	%>
+	<tr>
+	<% for(String data :rec){%>
+	<td>
+	<% out.println(data);%>
+	</td>
+	<% } %>
+	</tr>
+	<% } %>
+</table>
 
 
 <!-- 各部門をテーブル表示 -->
@@ -76,29 +106,29 @@ if ( err != null ){
 <table border = 1>
 <thead><tr><th>部門番号</th><th>部門名</th></tr></thead>
 <%
-int i = 0;//配列内のカラムを回すために必要な数字。1レコード毎に増えていく。
-for(ArrayList<String> rec :result){
+	int i = 0;//配列内のカラムを回すために必要な数字。1レコード毎に増えていく。
+	for(ArrayList<String> rec :result){
 %>
-<tr>
-<% for(String data :rec){%>
-<td>
-<% out.println(data);%>
-</td>
-<% } %>
-</tr>
-<% } %>
+	<tr>
+<%		 for(String data :rec){%>
+		<td>
+<% 			out.println(data);%>
+		</td>
+<%		 } %>
+	</tr>
+<% 		 } %>
 </table>
 
 <!-- 各課をテーブル表示 -->
 <h1>課リスト</h1>
 <table border = 1>
-<thead><tr><th>課番号</th><th>課名</th><th>部門名</th></tr></thead>
-<%	int i2 = 0;//配列内のカラムを回すために必要な数字。1レコード毎に増えていく。
-	for(ArrayList<String> rec :result2){ %>
-<tr>
-<% for (String data :rec) {%>
-<td>
-<% out.println(data);
+<thead><tr><th>課番号</th><th>課名</th></tr></thead>
+<%		int i2 = 0;//配列内のカラムを回すために必要な数字。1レコード毎に増えていく。
+		for(ArrayList<String> rec :result2){ %>
+	<tr>
+<%		 for (String data :rec) {%>
+		<td>
+<% 			out.println(data);
 } } %>
 </table>
 <hr/>

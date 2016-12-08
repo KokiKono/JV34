@@ -45,31 +45,29 @@ db.closeDB();
 <h1>付加給与表</h1>
 <table border = 1>
 	<thead><tr><th>付加給与ID</th><th>年～</th><th>年まで</th><th>付加給与</th><th></th></tr></thead>
-	<% for(ArrayList<String> rec :result){ %>
+	<%
+	int i = 0;
+	for(ArrayList<String> rec :result){ %>
 	<tr>
 	<% 		for(String data :rec){%>
 				<td>
 	<% 			out.println(data);%>
 				</td>
 	<% } %>
-		<td>
-			<input type = 'submit' name ="" value = "変更">
-		</td>
-	</tr>
-	<% } %>
+	<td>
+	<form method="get" action="included_salary_regist.jsp">
+		<input type="hidden" name="id" value="<%out.println(result.get(i).get(0));%>">
+		<input type="hidden" name="from" value="<%out.println(result.get(i).get(1));%>">
+		<input type="hidden" name="to" value="<%out.println(result.get(i).get(2));%>">
+		<input type="hidden" name="salary" value="<%out.println(result.get(i).get(3));%>">
+		<input type="submit" value="変更"></form></td></tr>
+	<% i++;} %>
 </table>
 
-<hr/>
-
-<!-- 変更フォーム -->
-<h1>付加給与の変更</h1>
-
-<form method="get" action="IncludedSalaryServlet" name="test" onSubmit="return check()">
-	<input type = "text" size="3" name = "from">年～
-	<input type = "text" size="3" name = "to">年
-	<input type = "text" size="7" name = "salary">円
-	<input type = 'submit' name ="" value = "給与登録">
+<form method="get" action="included_salary_regist.jsp" name="test" onSubmit="return check()">
+	<input type = 'submit' name ="" value = "新規登録する">
 </form>
 
+<hr/>
 </body>
 </html>
