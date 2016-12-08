@@ -88,7 +88,7 @@ public class EachManagerInsertServlet extends HttpServlet implements DataBase{
 					}
 				}
 
-				if(msg.isEmpty()==true)msg="更新しました。";
+				if(msg.isEmpty()==true)msg="登録しました。";
 
 				request.setAttribute("msg", msg);
 

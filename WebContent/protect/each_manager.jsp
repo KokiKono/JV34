@@ -36,7 +36,7 @@
 			<td><%=employment.officailPosition.name %></td>
 			<td><%=employment.employmentId %></td>
 			<td><a href="EachManagerDetailServlet?depNo=<%=employment.department.departmentId %>&empNo=<%=employment.employmentId%>">勤怠変更</a></td>
-			<td><a href="each_manager_detail_insert.jsp?empName=<%=employment.name %>&empNo=<%=employment.employmentId%>">勤怠変更</a></td>
+			<td><a href="each_manager_detail_insert.jsp?empName=<%=employment.name %>&empNo=<%=employment.employmentId%>">勤怠登録</a></td>
 		</tr>
 		<%} %>
 	</tbody>
