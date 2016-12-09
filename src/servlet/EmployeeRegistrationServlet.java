@@ -68,7 +68,7 @@ public class EmployeeRegistrationServlet extends HttpServlet
 		try
 		{
 			// 部署
-			ArrayList<ArrayList<String>> department = new ArrayList<ArrayList<String>>();
+			ArrayList<ArrayList<String>> departmentAndSub = new ArrayList<ArrayList<String>>();
 
 			// 役職
 			ArrayList<ArrayList<String>> officialPosition = new ArrayList<ArrayList<String>>();
@@ -80,9 +80,16 @@ public class EmployeeRegistrationServlet extends HttpServlet
 			db = new DBManager("JV34_team");
 
 			// 部署
-			String departmentSql = "SELECT department_id,department_name FROM department_master";
-			department = db.runSelect(departmentSql);
-			session.setAttribute("department", department);
+		//	String departmentSql = "SELECT department_id,department_name FROM department_master";
+			//department = db.runSelect(departmentSql);
+			//session.setAttribute("department", department);
+			String sql = "SELECT dm.department_id,dm.department_name,sdm.sub_department_id,sub_department_name "
+					+ "FROM department_master dm "
+					+ "inner join sub_department_master sdm on dm.department_id = sdm.department_id";
+			
+		
+			departmentAndSub = db.runSelect(sql);
+			session.setAttribute("departmentAndSub", departmentAndSub);
 
 			// 役職
 			String officialPositionSql = "SELECT official_position_id,official_position_name FROM official_position_master";
@@ -213,8 +220,25 @@ public class EmployeeRegistrationServlet extends HttpServlet
 					// 入力項目ごとにメッセージを格納するList
 
 					// 入力チェックしなくでもいいもの
-					// 部署
-					String department = request.getParameter("department");
+					// 部署,課
+					String departmentAndSub = request.getParameter("departmentAndSub");
+					
+					//部署
+					String departmentID = "";
+					
+					//課
+					String subDepartmentID = "";
+					
+					//取得してきた部署、課をそれぞれ分割
+					String[] department = departmentAndSub.split(",",0);
+					
+					for (int i = 0; i < department.length; i++)
+					{
+						departmentID = department[0];
+						subDepartmentID = department[1];
+					}
+					System.out.println("部署" + departmentID);
+					System.out.println("課名" + subDepartmentID);
 					// 役職
 					String officialPosition = request.getParameter("officialPosition");
 
@@ -236,10 +260,10 @@ public class EmployeeRegistrationServlet extends HttpServlet
 
 					String sql = "INSERT INTO employee_master (" + "employee_master, " + "password, "
 							+ "employee_name_kana, " + "employee_name, " + "birthday, " + "sex, " + "postal_code, "
-							+ "address, " + "tell, " + "department_id, " + "official_position_id, " + "joined_month) "
-							+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+							+ "address, " + "tell, " + "department_id, " + "sub_department_id," + "official_position_id, " + "joined_month) "
+							+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					db.updateORInsert(sql, employeeMaster, password, kanaName, name, birthdayDate, sex, postalCode,
-							address, tel, department, officialPosition, joined);
+							address, tel, departmentID, subDepartmentID, officialPosition, joined);
 
 				} else
 				{

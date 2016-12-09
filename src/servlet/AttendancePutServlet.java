@@ -24,15 +24,14 @@ import beans.ErrorCheck;
  * Servlet implementation class AttendancePutServlet
  */
 @WebServlet("/protect/AttendancePutServlet")
-public class AttendancePutServlet extends HttpServlet
-{
+public class AttendancePutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	DBManager db;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AttendancePutServlet()
-	{
+	public AttendancePutServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -41,39 +40,35 @@ public class AttendancePutServlet extends HttpServlet
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// 文字化け対策
 		response.setContentType("application/json; charset = UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		
-		try
-		{
-			//登録された最低勤怠日数情報を取得
+
+		try {
+			// 登録された最低勤怠日数情報を取得
 			ArrayList<ArrayList<String>> lowestWorkingDays = new ArrayList<ArrayList<String>>();
 
 			db = new DBManager("JV34_team");
 			String sql = "SELECT period, lowest_working_days FROM lowest_working_days_master";
 			lowestWorkingDays = db.runSelect(sql);
-			
-			//遷移
+
+			// 遷移
 			String strJspName = "AttendancePut.jsp";
-			
+
 			request.setAttribute("lowestWorkingDays", lowestWorkingDays);
-			
+
 			RequestDispatcher rd = request.getRequestDispatcher(strJspName);
 			rd.forward(request, response);
-			
-		} catch (ClassNotFoundException e)
-		{
+
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -81,8 +76,8 @@ public class AttendancePutServlet extends HttpServlet
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
 		// 文字化け対策
@@ -109,8 +104,7 @@ public class AttendancePutServlet extends HttpServlet
 		// 年は数値,月はnull,最低出勤日はnullではなかったら
 
 		if (errorCheck.patternMacher(pattern, year) == true && errorCheck.getMonth(month) != null
-				&& errorCheck.StrToInt(days) != null)
-		{
+				&& errorCheck.StrToInt(days) != null) {
 
 			_month = errorCheck.getMonth(month);
 
@@ -120,69 +114,54 @@ public class AttendancePutServlet extends HttpServlet
 			cleandar._setMonth(_month);
 			cleandar._setDays(days);
 			// 過去の年月ならエラメッセージに
-			if (cleandar.pastPresentFuture() == 1)
-			{
+			if (cleandar.pastPresentFuture() == 1) {
 				mes += "正しい年月を入力してください<br>";
-			} else if (cleandar.daysCheck() == false)
-			{
+			} else if (cleandar.daysCheck() == false) {
 				mes += "正しい最低勤怠日数を入力してください<br>";
 			}
 
-		} else
-		{
-			if (errorCheck.patternMacher(pattern, year) == false)
-			{
+		} else {
+			if (errorCheck.patternMacher(pattern, year) == false) {
 				mes += "年を正しく入力してください<br>";
 			}
-			if (errorCheck.StrToInt(days) == null)
-			{
+			if (errorCheck.StrToInt(days) == null) {
 				mes += "最低勤怠日数入力してください<br>";
 			}
-			if (errorCheck.getMonth(month) == null)
-			{
+			if (errorCheck.getMonth(month) == null) {
 				mes += "月を正しく入力してください<br>";
 			}
 
 		}
-
 		// エラメッセージないなら
-		if (mes.isEmpty())
-		{
-			try
-			{
+		if (mes.isEmpty()) {
+			try {
 				// JV34_teamというデータベースにアクセス
 				db = new DBManager("JV34_team");
 
 				boolean isExist = db.selectIsExist("select * from lowest_working_days_master where period = ?",
 						Integer.parseInt(year + _month));
 
-				if (isExist == false)
-				{
+				if (isExist == false) {
 					// 最低勤怠日数を登録
 					String sql = "insert into lowest_working_days_master(period,lowest_working_days) values(?,?)";
 					int flag = db.updateORInsert(sql, Integer.parseInt(year + _month), Integer.parseInt(days));
 
-					if (flag == 1)
-					{
+					if (flag == 1) {
 						mes += "登録成功しました<br>";
-					} else
-					{
+					} else {
 						mes += "登録失敗しました<br>";
 					}
 
-				} else
-				{
+				} else {
 					mes += year + "年" + month + "月はすでに最低勤務日数を登録しました";
 				}
 
 				db.closeDB();
 
-			} catch (ClassNotFoundException e)
-			{
+			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SQLException e)
-			{
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -11,7 +11,6 @@ package servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,7 +31,7 @@ import beans.SearchEmployeeClass;
 public class ShowEmployeeServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-
+	DBManager db;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -70,10 +69,10 @@ public class ShowEmployeeServlet extends HttpServlet
 		
 		try
 		{
-			DBManager db = new DBManager("JV34_team");
+			db = new DBManager("JV34_team");
 
 			// 従業員一覧
-			String employeeSql = "SELECT employee_master,employee_name,employee_name_kana,sex,birthday,joined_month FROM employee_master";
+			String employeeSql = "SELECT employee_master,employee_name,employee_name_kana,sex,birthday,joined_month,leaving_month FROM employee_master";
 			employeeInfo = db.runSelect(employeeSql);
 			session.setAttribute("employeeInfo", employeeInfo);
 
@@ -81,6 +80,8 @@ public class ShowEmployeeServlet extends HttpServlet
 			String departmentSql = "SELECT department_id,department_name FROM department_master";
 			department = db.runSelect(departmentSql);
 			session.setAttribute("department", department);
+			
+		
 
 			// 役職
 			String officialPositionSql = "SELECT official_position_id,official_position_name FROM official_position_master";
@@ -127,57 +128,76 @@ public class ShowEmployeeServlet extends HttpServlet
 		String minYear = request.getParameter("minYear");
 		String maxYear = request.getParameter("maxYear");
 		String rank = request.getParameter("rank");
+		
 		SearchEmployeeClass search = new SearchEmployeeClass();
-		if (!check.isNullOrEmpty(minYear) && !check.isNullOrEmpty(maxYear))
-		{
-			search.yearsOfService(minYear, maxYear);
-		}
+		//minYearとmaxYearの入力チェック
+		//入力ミスない場合は
+			search.setMinYear(minYear);
+			search.setMaxYear(maxYear);
+		String WorkingYearSql = check.nullReturnEmpty(search.searchWorkingYearSql(search.searchType()));
 		
-		
-		HashMap<String,String> map = new HashMap<String,String>();
-		map.put("department_id", department);
-		map.put("official_position_id", officialPosition);
-		map.put("department_id", minYear);
-		map.put("department_id", maxYear);
-		map.put("rank", rank);
+		// 検索情報項目をListに格納
 		ArrayList<String> searchCriteria = new ArrayList<String>();
-
-		//searchCriteria = search.searchCriteria(department, officialPosition, minYear, maxYear, rank);
+		searchCriteria.add(department);
+		searchCriteria.add(officialPosition);
+		searchCriteria.add(rank);
+		
 		System.out.println(searchCriteria.toString());
-
-		// ランクについては？値大きいほどランクが大き？
 		
+		// sql文を発行
 		StringBuilder sql = new StringBuilder();
-		sql.append("select employee_master,employee_name,employee_name_kana,sex,birthday,joined_month,TIMESTAMPDIFF(YEAR,joined_month,leaving_month) from employee_master");
-		
-		//勤務年数計算　String sql = "SELECT TIMESTAMPDIFF(YEAR,joined_month,leaving_month) from employee_master";
-		int j = 0;
-		for (int i = 0; i < searchCriteria.size(); i++)
+		sql.append("select employee_master,employee_name,employee_name_kana,sex,birthday,joined_month,leaving_month from v_employee_info ");
+		sql.append("where 1 = 1");
+	
+		// ANDを追加し
+		if (!check.isNullOrEmpty(searchCriteria.get(0)))
 		{
-			if (!check.isNullOrEmpty(searchCriteria.get(i)))
-			{
-				if (j == 0)
-				{
-					sql.append(" where ");
-					j = 1;
-				}
-				else if (j == 1)
-				{
-					sql.append()
-				}
-				sql.append("")
-				System.out.println(searchCriteria.toString());
-			}
+			sql.append(" and department_id = " + department);
+		}
+		if (!check.isNullOrEmpty(searchCriteria.get(1)))
+		{
+			sql.append(" and official_position_id = " + officialPosition);
+		}
+		if (!check.isNullOrEmpty(searchCriteria.get(2)))
+		{
+			sql.append(" and rank >= " + rank);
+		}
+		if (!check.isNullOrEmpty(WorkingYearSql))
+		{
+			sql.append(WorkingYearSql);
 		}
 		
+		try
+		{
+			db = new DBManager("JV34_team");
+			
+			// データベースの結果をListに
+			ArrayList<ArrayList<String>> searchEmployeeList = new ArrayList<ArrayList<String>>();
+			searchEmployeeList = db.runSelect(sql.toString());
+			
+			if (searchEmployeeList.isEmpty())
+			{
+				request.setAttribute("searchEmployeeIsEmpty", "検索結果0件でした");
+			}
+			
+			// Jspに飛ばし
+			String strJspName = "ShowEmployee.jsp";
+			request.setAttribute("searchEmployeeList", searchEmployeeList);
+			RequestDispatcher rd = request.getRequestDispatcher(strJspName);
+			rd.forward(request, response);
+		
+			
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("sql- >"+sql.toString());
-		// 空チェック
-
-		// 入力されたものを取り出し
-		// ANDを追加し
-		// sql文を発行
-		// データベースの結果をListに
-		// Jspに飛ばし
+	
 	}
 
 }

@@ -80,7 +80,7 @@ public class EmployeeInfoChangeServlet extends HttpServlet
 //				map.put("joinedMonth", "");
 //				map.put("leavingMonth", "");
 
-			}
+			//}
 			
 			System.out.println(map.get(employeeName));
 		} catch (ClassNotFoundException e)
