@@ -5,8 +5,13 @@
  */
 package beans;
 
-public class UserInfoGetter {
+import java.util.ArrayList;
 
+import common.DataBase;
+
+public class UserInfoGetter implements DataBase{
+
+	private static String _dbName = DBName;
 	private String _userId = "";
 
 	/**
@@ -22,11 +27,15 @@ public class UserInfoGetter {
 	 * @return
 	 */
 	public String getUserName(){
-		String userName = "";
+		String userName = "ゲスト";
 		DBManager dbManager = null;
 		try{
-			String sql = "SELECT emp.employee_name FROM employee_master emp WHERE emp.department_id = '" + _userId + "'";
-			dbManager.select(sql);
+			dbManager = new DBManager(_dbName);
+			String sql = "SELECT emp.employee_name FROM employee_master emp WHERE emp.employee_master = '" + _userId + "'";
+			ArrayList<ArrayList> list = dbManager.select(sql);
+			if(list.size() > 0){
+				userName = list.get(0).get(0).toString();
+			}
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -39,11 +48,15 @@ public class UserInfoGetter {
 	 * @return
 	 */
 	public String getDeptId() {
-		String deptId = "";
+		String deptId = "所属部署なし";
 		DBManager dbManager = null;
 		try{
-			String sql = "SELECT emp.department_id FROM employee_master emp WHERE emp.department_id = '"+ _userId +"'";
-			dbManager.select(sql);
+			dbManager = new DBManager(_dbName);
+			String sql = "SELECT emp.department_id FROM employee_master emp WHERE emp.employee_master = '"+ _userId +"'";
+			ArrayList<ArrayList> list = dbManager.select(sql);
+			if(list.size() > 0){
+				deptId = list.get(0).get(0).toString();
+			}
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

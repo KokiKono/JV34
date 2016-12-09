@@ -1,9 +1,17 @@
 @CHARSET "UTF-8";
 
+/****************************************************************
+ *
+ * wrapper
+ *
+ ******************************************************************/
 .wrapper {
 	margin: 0px;
 }
 
+/********************************
+ * トップページ用
+ **********************************/
 .topwrapper{
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -15,6 +23,11 @@
     width: 400px;
 }
 
+/****************************************************************
+ *
+ * header
+ *
+ ******************************************************************/
 .header {
 	margin: 0px;
 	height: 51px;
@@ -36,8 +49,22 @@
 
 .header p {
 	float: right;
+	margin-top: 22px;
+	margin-right: 20px;
 }
 
+.header a {
+	float: right;
+	margin-top: 9px;
+	margin-right: 20px;
+
+}
+
+/****************************************************************
+ *
+ * nav
+ *
+ ******************************************************************/
 .nav {
 	width: 200px;
 	height: 720px;
@@ -60,15 +87,26 @@
 		border: 0px solid #ccc;
 }
 
+/****************************************************************
+ *
+ * contents
+ *
+ ******************************************************************/
 .contents {
 	float: left;
-	padding: 20px;
+	padding: 10px;
 }
 
+/********************************
+ * error
+ **********************************/
 .error {
 	color: #ff9988;
 }
 
+/********************************
+ * トップページ用
+ **********************************/
 .toperror {
 	margin-bottom: 10px;
 	height: 20px;
@@ -77,4 +115,62 @@
 #welcome {
 	background-color: #faa;
 }
+
+/********************************
+ * フォーム調整
+ **********************************/
+ .rowchild {
+	margin-bottom: 20px;
+}
+
+.fmtitle {
+	float: left;
+}
+
+.kome {
+	color: #ff9988;
+	font-weight: bold;
+	margin-left: 10px;
+	float: left;
+}
+
+.fmyear {
+	width: 80px;
+	float: left;
+}
+
+.fmmonth {
+	width: 60px;
+	float: left;
+
+}
+
+.datebar {
+	width:4px;
+	margin-top: 4px;
+	margin-left: 10px;
+	margin-right: 10px;
+	float: left;
+}
+
+/********************************
+ * layout1 （左登録／右データテーブル）
+ **********************************/
+.l1input {
+	width: 300px;
+	height: 680px;
+	float: left;
+	border-right: 1px dashed #ccc;
+}
+
+.l1datasection {
+	width: 810px;
+	height: 680px;
+	float: left;
+	margin-left: 20px;
+}
+
+
+
+
 

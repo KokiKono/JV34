@@ -13,14 +13,21 @@
 	<script src="js/bootstrap.min.js"></script>
 	<!-- 調整用css読み込み -->
 	<link href="css/common.css" rel="stylesheet">
-	<title>トップページ</title>
+	<%
+	 //出力用の部署名と機能名を設定
+	 String deptName = "各社員";
+	 String pageName = "トップページ";
+	 request.setAttribute("DeptName", deptName);
+	 request.setAttribute("PageName", pageName);
+	%>
+	<title><%=pageName %></title>
 </head>
 <body>
 <div class="wrapper">
 	<!-- 共通ヘッダー -->
-	<%@ include file="../header.jsp" %>
+	<%@ include file="header.jsp" %>
 	<!-- 共通ナビゲーション -->
-	<%@ include file="../nav.jsp" %>
+	<%@ include file="nav.jsp" %>
 
 	<div class="contents">
 		<div style="font-size: 130px;">

@@ -3,11 +3,12 @@ pageEncoding="UTF-8"%>
 <%@ page import="beans.UserInfoGetter" %>
 <%
  //ユーザーIDを取得
- String userId = (String)request.getSession().getAttribute("employeeId");
+ //String navUserId = (String)request.getSession().getAttribute("employeeId");
+ String navUserId = "0000001";
 
  //部署IDを取得。
- UserInfoGetter uig = new UserInfoGetter(userId);
- String depNo = uig.getDeptId();
+ UserInfoGetter navUig = new UserInfoGetter(navUserId);
+ String navDepNo = navUig.getDeptId();
 %>
 
 <div class="nav">
@@ -40,7 +41,7 @@ pageEncoding="UTF-8"%>
 
         <h5 class="text-info">各部長メニュー</h5>
         <div class="list-group">
-          <a href="http://localhost:8080/JV34_team/protect/EachManagerServlet?depNo=<%=depNo %> class="list-group-item">勤怠登録</a>
+          <a href="http://localhost:8080/JV34_team/protect/EachManagerServlet?depNo=<%=navDepNo %>" class="list-group-item">勤怠管理</a>
         </div>
 
 </div>

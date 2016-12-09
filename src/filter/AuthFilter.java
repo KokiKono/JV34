@@ -58,13 +58,9 @@ public class AuthFilter implements Filter
 		/**
 		 * ここに社員IDを渡す sessionで保管した社員ID
 		 */
-<<<<<<< HEAD
+
 		//String employeeID = (String) session.getAttribute("employeeID");
-		String employeeID = "0000003";
-=======
-		// String employeeID = (String) session.getAttribute("employeeID");
-		String employeeID = "0000002";
->>>>>>> origin/dyf
+		String employeeID = "0000001";
 
 		ErrorCheck check = new ErrorCheck();
 		// 未認証ならサインイン画面へ

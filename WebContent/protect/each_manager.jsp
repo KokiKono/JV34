@@ -11,12 +11,35 @@
 	if(employments==null)employments=new ArrayList<Employment>();
 %>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><%=deptName %></title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- BootstrapのCSS読み込み -->
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<!-- jQuery読み込み -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- BootstrapのJS読み込み -->
+	<script src="../js/bootstrap.min.js"></script>
+	<!-- 調整用css読み込み -->
+	<link href="../css/common.css" rel="stylesheet">
+	<%
+	 //出力用の部署名と機能名を設定
+	 String hdeptName = "各部長";
+	 String hpageName = "勤怠管理";
+	 request.setAttribute("DeptName", hdeptName);
+	 request.setAttribute("PageName", hpageName);
+	%>
+	<title><%=hpageName %></title>
 </head>
 <body>
+<div class="wrapper">
+	<!-- 共通ヘッダー -->
+	<%@ include file="../header.jsp" %>
+	<!-- 共通ナビゲーション -->
+	<%@ include file="../nav.jsp" %>
+
+	<div class="contents">
 <table>
 	<thead>
 		<tr>
@@ -41,5 +64,7 @@
 		<%} %>
 	</tbody>
 </table>
+</div>
+</div>
 </body>
 </html>

@@ -3,18 +3,21 @@
 <%@ page import="beans.UserInfoGetter" %>
 <%
  //ユーザーIDを取得
- String userId = (String)request.getSession().getAttribute("employeeId");
+ //String headUserId = (String)session.getAttribute("employeeId");
+ String headUserId = "0000001";
 
  //ユーザー名を取得。
- UserInfoGetter uig = new UserInfoGetter(userId);
- String strUserName = uig.getUserName();
+ UserInfoGetter headUig = new UserInfoGetter(headUserId);
+ String headUserName = headUig.getUserName();
 
- String strDeptName = (String)request.getAttribute("DeptName");
- String strPageName = (String)request.getAttribute("PageName");
+ String headDeptName = (String)request.getAttribute("DeptName");
+ String headPageName = (String)request.getAttribute("PageName");
 %>
 <div class="header">
-	<h3><%=strDeptName %></h3><!-- 部署名 -->
-	<h4><%=strPageName %></h4><!-- 機能名 -->
+	<h3><%=headDeptName %></h3><!-- 部署名 -->
+	<h4><%=headPageName %></h4><!-- 機能名 -->
 
-	<p>ログインユーザー：<%=strUserName %></p>
+	<a class="btn btn-primary" href="http://localhost:8080/JV34_team/Login.jsp" role="button">ログアウト</a>
+	<p>ログインユーザー：<%=headUserName %></p>
+
 </div>
